@@ -1,13 +1,10 @@
 package com.biz.addressbook.entity;
 
 import com.biz.addressbook.dto.AddressBookDTO;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
 public class ContactPerson {
     private  long id;
     private String firstName;
@@ -20,13 +17,26 @@ public class ContactPerson {
 
     public ContactPerson(int id, AddressBookDTO addressBookDTO) {
         this.id=id;
-        this.firstName=addressBookDTO.getFirstName();
-        this.lastName=addressBookDTO.getLastName();
-        this.city= addressBookDTO.getCity();
-        this.state=addressBookDTO.getState();
-        this.zip= addressBookDTO.getZip();
-        this.phoneNumber= addressBookDTO.getPhoneNumber();
-        this.emailId= addressBookDTO.getEmailId();
+        this.firstName=addressBookDTO.firstName;
+        this.lastName=addressBookDTO.lastName;
+        this.city= addressBookDTO.city;
+        this.state=addressBookDTO.state;
+        this.zip= addressBookDTO.zip;
+        this.phoneNumber= addressBookDTO.phoneNumber;
+        this.emailId= addressBookDTO.emailId;
     }
 
+    @Override
+    public String toString() {
+        return "ContactPerson{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", zip=" + zip +
+                ", phoneNumber=" + phoneNumber +
+                ", emailId='" + emailId + '\'' +
+                '}';
+    }
 }
