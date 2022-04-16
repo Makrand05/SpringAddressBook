@@ -14,6 +14,7 @@ public class AddressBookDTO {
 
     //Validate first name
     @NotEmpty(message = "First name should not be empty")
+
     @Pattern(regexp = "^[A-Z]{1}[a-zA-Z\\s]{2,}$", message = "Please enter valid name")
     public String firstName;
 
