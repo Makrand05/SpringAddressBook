@@ -18,38 +18,39 @@ public class AddressBookServiceImpl implements IAddressBookService {
     @Autowired
     private AddressBookRepository addressBookRepository;
 
+    /**
+     * get all contact list from repository
+     * @return list of contact person
+     */
     public  List<ContactPerson> getContactPersonList() {
-
-        List<ContactPerson> contactPersonList= new ArrayList<>();
-       // contactPersonList.add( new ContactPerson(1,new AddressBookDTO("Makrand","Shingare","Solapur","MH",413113,9096592086L,"Mak@gm.com")));
-       return addressBookRepository.findAll();
-     //   return contactPersonList;
+    return addressBookRepository.findAll();
     }
 
+    /**
+     * get the contact id and return contact data object
+     * @param id contact id
+     * @return contact object
+     */
     @Override
     public ContactPerson getContactByID(long id) {
       return addressBookRepository.getById(id);
-
-      //  return new ContactPerson (2,new AddressBookDTO("Makrand","Shingare","Solapur","MH",413113,9096592086L,"Mak@gm.com"));
-
-    }
+}
 
     @Override
     public ContactPerson createContactPerson(AddressBookDTO addressBookDTO) {
 
        return addressBookRepository.save(new ContactPerson(addressBookDTO));
-
-    //    return new ContactPerson(1,addressBookDTO);
     }
 
     @Override
-    public ContactPerson updateContactPerson(AddressBookDTO addressBookDTO) {
-        return addressBookRepository.saveAndFlush(new ContactPerson(addressBookDTO));
-        //return new ContactPerson(1,addressBookDTO);
+    public ContactPerson updateContactPerson(int id, AddressBookDTO addressBookDTO) {
+       ContactPerson contactPerson= this.getContactByID(id);
+       contactPerson.updateContactPerson(addressBookDTO);
+       return addressBookRepository.save(contactPerson);
     }
 
     @Override
     public void deleteContactByID(int id) {
-
+        addressBookRepository.delete(this.getContactByID(id));
     }
 }

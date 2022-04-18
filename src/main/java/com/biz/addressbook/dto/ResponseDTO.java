@@ -2,6 +2,9 @@ package com.biz.addressbook.dto;
 
 import lombok.*;
 
+/**
+ * Class for send response in for of string message and data object
+ */
 @Data
 @Getter
 @Setter
