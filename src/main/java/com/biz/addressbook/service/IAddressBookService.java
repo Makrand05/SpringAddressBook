@@ -9,7 +9,7 @@ public interface IAddressBookService {
 
     List<ContactPerson> getContactPersonList();
 
-    ContactPerson getContactByID(int id);
+    ContactPerson getContactByID(long id);
 
     ContactPerson createContactPerson(AddressBookDTO addressBookDTO);
 

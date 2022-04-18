@@ -3,9 +3,16 @@ package com.biz.addressbook.entity;
 import com.biz.addressbook.dto.AddressBookDTO;
 import lombok.*;
 
+import javax.persistence.*;
+
 @Getter
 @Setter
-public class ContactPerson {
+@Entity
+@Table(name = "AddressBook")
+public @Data class ContactPerson {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private  long id;
     private String firstName;
     private String lastName;
@@ -15,8 +22,14 @@ public class ContactPerson {
     private Long phoneNumber;
     private String emailId;
 
-    public ContactPerson(int id, AddressBookDTO addressBookDTO) {
+    public ContactPerson(AddressBookDTO addressBookDTO) {
+        this.updateContactPerson(addressBookDTO);
+
+    }
+
+    public void updateContactPerson(AddressBookDTO addressBookDTO) {
         this.id=id;
+
         this.firstName=addressBookDTO.firstName;
         this.lastName=addressBookDTO.lastName;
         this.city= addressBookDTO.city;
@@ -24,6 +37,11 @@ public class ContactPerson {
         this.zip= addressBookDTO.zip;
         this.phoneNumber= addressBookDTO.phoneNumber;
         this.emailId= addressBookDTO.emailId;
+
+    }
+
+    public ContactPerson() {
+
     }
 
     @Override

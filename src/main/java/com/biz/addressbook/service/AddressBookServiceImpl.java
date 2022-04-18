@@ -2,6 +2,8 @@ package com.biz.addressbook.service;
 
 import com.biz.addressbook.dto.AddressBookDTO;
 import com.biz.addressbook.entity.ContactPerson;
+import com.biz.addressbook.repository.AddressBookRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,28 +14,38 @@ import java.util.List;
  */
 @Service
 public class AddressBookServiceImpl implements IAddressBookService {
-    @Override
+
+    @Autowired
+    private AddressBookRepository addressBookRepository;
+
     public  List<ContactPerson> getContactPersonList() {
 
         List<ContactPerson> contactPersonList= new ArrayList<>();
-        contactPersonList.add( new ContactPerson(1,new AddressBookDTO("Makrand","Shingare","Solapur","MH",413113,9096592086L,"Mak@gm.com")));
-        return contactPersonList;
+       // contactPersonList.add( new ContactPerson(1,new AddressBookDTO("Makrand","Shingare","Solapur","MH",413113,9096592086L,"Mak@gm.com")));
+       return addressBookRepository.findAll();
+     //   return contactPersonList;
     }
 
     @Override
-    public ContactPerson getContactByID(int id) {
-        return new ContactPerson (2,new AddressBookDTO("Makrand","Shingare","Solapur","MH",413113,9096592086L,"Mak@gm.com"));
+    public ContactPerson getContactByID(long id) {
+      return addressBookRepository.getById(id);
+
+      //  return new ContactPerson (2,new AddressBookDTO("Makrand","Shingare","Solapur","MH",413113,9096592086L,"Mak@gm.com"));
 
     }
 
     @Override
     public ContactPerson createContactPerson(AddressBookDTO addressBookDTO) {
-        return new ContactPerson(1,addressBookDTO);
+
+       return addressBookRepository.save(new ContactPerson(addressBookDTO));
+
+    //    return new ContactPerson(1,addressBookDTO);
     }
 
     @Override
     public ContactPerson updateContactPerson(AddressBookDTO addressBookDTO) {
-        return new ContactPerson(1,addressBookDTO);
+        return addressBookRepository.saveAndFlush(new ContactPerson(addressBookDTO));
+        //return new ContactPerson(1,addressBookDTO);
     }
 
     @Override
