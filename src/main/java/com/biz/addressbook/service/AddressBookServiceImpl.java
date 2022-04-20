@@ -2,6 +2,7 @@ package com.biz.addressbook.service;
 
 import com.biz.addressbook.dto.AddressBookDTO;
 import com.biz.addressbook.entity.ContactPerson;
+import com.biz.addressbook.exception.AddressbookException;
 import com.biz.addressbook.repository.AddressBookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class AddressBookServiceImpl implements IAddressBookService {
      */
     @Override
     public ContactPerson getContactByID(long id) {
-      return addressBookRepository.getById(id);
+      return addressBookRepository.findById(id).orElseThrow(()->new AddressbookException("Employee not found with id :"+id));
 }
 
     @Override
@@ -50,7 +51,13 @@ public class AddressBookServiceImpl implements IAddressBookService {
     }
 
     @Override
-    public void deleteContactByID(int id) {
-        addressBookRepository.delete(this.getContactByID(id));
+    public void deleteContactByID(long id) {
+        ContactPerson contactPerson=this.getContactByID(id);
+        addressBookRepository.delete(contactPerson);
+    }
+
+    @Override
+    public ContactPerson getData(String name,String pass) {
+        return addressBookRepository.findAddressbookDataByCity(name,pass);
     }
 }

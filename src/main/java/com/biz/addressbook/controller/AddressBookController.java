@@ -24,7 +24,7 @@ public class AddressBookController {
      * @return data and status for get request
      */
     @GetMapping(value = {"", "/", "/get"})
-    public ResponseEntity<String> getAddressBook() {
+    public ResponseEntity<ResponseDTO> getAddressBook() {
         List<ContactPerson> contactPersonList = iAddressBookService.getContactPersonList();
         ResponseDTO responseDTO = new ResponseDTO("Get Mapping success", contactPersonList);
         return new ResponseEntity(responseDTO, HttpStatus.OK);
@@ -37,12 +37,13 @@ public class AddressBookController {
      * @param id of the contact
      * @return data with status
      */
-    @GetMapping("get/{contactId}")
-    public ResponseEntity<String> getContactByID(@PathVariable("contactId") int id) {
+    @GetMapping("/getbyid/{contactId}")
+    public ResponseEntity<ResponseDTO> getContactByID(@PathVariable("contactId") long id) {
 
         ContactPerson contactPerson = iAddressBookService.getContactByID(id);
-        ResponseDTO responseDTO = new ResponseDTO("Get call by Id success", contactPerson);
-        return new ResponseEntity(responseDTO, HttpStatus.OK);
+//        System.out.println(contactPerson);
+        ResponseDTO responseDTO = new ResponseDTO("Get call by Id success"+id, contactPerson);
+        return new ResponseEntity<ResponseDTO>(responseDTO, HttpStatus.OK);
     }
 
     /**
@@ -52,7 +53,7 @@ public class AddressBookController {
      * @return data with status
      */
     @PostMapping("/create")
-    public ResponseEntity<String> createContact(@RequestBody AddressBookDTO addressBookDTO) {
+    public ResponseEntity<ResponseDTO> createContact(@RequestBody AddressBookDTO addressBookDTO) {
         ContactPerson contactPerson = iAddressBookService.createContactPerson(addressBookDTO);
         ResponseDTO responseDTO = new ResponseDTO("Created new contact in address book", contactPerson);
         return new ResponseEntity(responseDTO, HttpStatus.OK);
@@ -65,7 +66,7 @@ public class AddressBookController {
      * @return data with status
      */
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> updateContact(@PathVariable("id") int id, @RequestBody AddressBookDTO addressBookDTO) {
+    public ResponseEntity<ResponseDTO> updateContact(@PathVariable("id") int id, @RequestBody AddressBookDTO addressBookDTO) {
         ContactPerson contactPerson = iAddressBookService.updateContactPerson(id, addressBookDTO);
         ResponseDTO responseDTO = new ResponseDTO("Updated new contact in address book", contactPerson);
         return new ResponseEntity(responseDTO, HttpStatus.OK);
@@ -78,10 +79,34 @@ public class AddressBookController {
      * @return data with status
      */
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteContact(@PathVariable("id") int id) {
-        ContactPerson contactPerson = null;
+    public ResponseEntity<String> deleteAddressbookData(@PathVariable("id") long id) {
         iAddressBookService.deleteContactByID(id);
-        ResponseDTO responseDTO = new ResponseDTO("Delect contact by id" + id, contactPerson);
+        return new ResponseEntity<String>("Address Book with ID "+id+" is Deleted",HttpStatus.OK);
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<ResponseDTO> registerUser(@RequestBody AddressBookDTO addressBookDTO) {
+        ContactPerson contactPerson = iAddressBookService.createContactPerson(addressBookDTO);
+        ResponseDTO responseDTO = new ResponseDTO("Registered new user in address book", contactPerson);
         return new ResponseEntity(responseDTO, HttpStatus.OK);
+    }
+    /**
+     * login API using username and password
+     * @param name
+     * @param password
+     * @return
+     */
+    @PostMapping(value = "/login/{name}/{password}")
+    public ResponseEntity<ResponseDTO> loginAddressBook(@PathVariable("name") String name,@PathVariable("password") String password  )
+    {
+        ResponseDTO responseDTO=null;
+        ContactPerson contactPerson=iAddressBookService.getData(name, password);
+        if(contactPerson!=null) {
+            responseDTO = new ResponseDTO("Get call by Id success", contactPerson);
+        }
+        else {
+            responseDTO =new ResponseDTO(" Post call by login ","Invalid Username and password");
+        }
+        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
 }

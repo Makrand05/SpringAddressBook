@@ -27,7 +27,7 @@ public class AddressBookDTO {
     @Pattern(regexp = "^[A-Z]{1}[a-zA-Z\\s]{2,}$", message = "Please enter valid last name")
     public String city;
 
-//    validation for stae name
+//    validation for state name
     @NotEmpty(message = "State name should not be empty")
     public String state;
 
@@ -46,6 +46,11 @@ public class AddressBookDTO {
             ,message = "Email shuld be a valid (e.g. xxx@yyy.zzz)")
     public String emailId;
 
+    @NotEmpty
+    @Pattern(regexp = "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[~!@#$%^&*():<>?]).{8,20}",
+    message = "Please enter valid password")
+    public  String password;
+
     @Override
     public String toString() {
         return "AddressBookDTO{" +
@@ -56,6 +61,7 @@ public class AddressBookDTO {
                 ", zip=" + zip +
                 ", phoneNumber=" + phoneNumber +
                 ", emailId='" + emailId + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 }

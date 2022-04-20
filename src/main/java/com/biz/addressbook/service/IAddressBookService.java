@@ -15,5 +15,7 @@ public interface IAddressBookService {
 
     ContactPerson updateContactPerson(int id, AddressBookDTO addressBookDTO);
 
-    void deleteContactByID(int id);
+    void deleteContactByID(long id);
+
+    ContactPerson getData(String name,String pass);
 }

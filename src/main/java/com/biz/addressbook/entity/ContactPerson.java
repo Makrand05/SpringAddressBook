@@ -21,6 +21,7 @@ public @Data class ContactPerson {
     private Integer zip;
     private Long phoneNumber;
     private String emailId;
+    public String password;
 
     public ContactPerson(AddressBookDTO addressBookDTO) {
         this.updateContactPerson(addressBookDTO);
@@ -28,8 +29,6 @@ public @Data class ContactPerson {
     }
 
     public void updateContactPerson(AddressBookDTO addressBookDTO) {
-        this.id=id;
-
         this.firstName=addressBookDTO.firstName;
         this.lastName=addressBookDTO.lastName;
         this.city= addressBookDTO.city;
@@ -37,6 +36,7 @@ public @Data class ContactPerson {
         this.zip= addressBookDTO.zip;
         this.phoneNumber= addressBookDTO.phoneNumber;
         this.emailId= addressBookDTO.emailId;
+        this.password=addressBookDTO.password;
 
     }
 
@@ -55,6 +55,7 @@ public @Data class ContactPerson {
                 ", zip=" + zip +
                 ", phoneNumber=" + phoneNumber +
                 ", emailId='" + emailId + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 }
