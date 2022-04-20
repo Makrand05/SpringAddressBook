@@ -58,6 +58,6 @@ public class AddressBookServiceImpl implements IAddressBookService {
 
     @Override
     public ContactPerson getData(String name,String pass) {
-        return addressBookRepository.findAddressbookDataByCity(name,pass);
+        return addressBookRepository.findDataByNameAndPassword(name,pass);
     }
 }

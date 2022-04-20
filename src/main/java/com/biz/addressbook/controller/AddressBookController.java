@@ -84,7 +84,7 @@ public class AddressBookController {
         return new ResponseEntity<String>("Address Book with ID "+id+" is Deleted",HttpStatus.OK);
     }
 
-    @PostMapping("/create")
+    @PostMapping("/register")
     public ResponseEntity<ResponseDTO> registerUser(@RequestBody AddressBookDTO addressBookDTO) {
         ContactPerson contactPerson = iAddressBookService.createContactPerson(addressBookDTO);
         ResponseDTO responseDTO = new ResponseDTO("Registered new user in address book", contactPerson);
@@ -92,20 +92,20 @@ public class AddressBookController {
     }
     /**
      * login API using username and password
-     * @param name
-     * @param password
+     * @param
+     * @param
      * @return
      */
-    @PostMapping(value = "/login/{name}/{password}")
-    public ResponseEntity<ResponseDTO> loginAddressBook(@PathVariable("name") String name,@PathVariable("password") String password  )
+    @PostMapping(value = "/login")
+    public ResponseEntity<ResponseDTO> loginAddressBook(@RequestBody AddressBookDTO addressBookDTO)
     {
         ResponseDTO responseDTO=null;
-        ContactPerson contactPerson=iAddressBookService.getData(name, password);
+        ContactPerson contactPerson=iAddressBookService.getData(addressBookDTO.firstName,addressBookDTO.password);
         if(contactPerson!=null) {
-            responseDTO = new ResponseDTO("Get call by Id success", contactPerson);
+            responseDTO = new ResponseDTO(contactPerson.getFirstName()+" User login Successfully");
         }
         else {
-            responseDTO =new ResponseDTO(" Post call by login ","Invalid Username and password");
+            responseDTO =new ResponseDTO("Invalid Username and password");
         }
         return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
