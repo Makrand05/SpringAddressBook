@@ -17,5 +17,7 @@ public interface IAddressBookService {
 
     void deleteContactByID(long id);
 
-    ContactPerson getData(String name,String pass);
+    boolean getData(String name, String pass);
+
+    boolean encodePassword(String password);
 }

@@ -3,12 +3,13 @@ package com.biz.addressbook.dto;
 import com.biz.addressbook.entity.ContactPerson;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
-
+@Data
 @AllArgsConstructor
 public class AddressBookDTO {
 

@@ -1,6 +1,7 @@
 package com.biz.addressbook.entity;
 
 import com.biz.addressbook.dto.AddressBookDTO;
+import com.biz.addressbook.service.AddressBookServiceImpl;
 import lombok.*;
 
 import javax.persistence.*;
@@ -36,7 +37,7 @@ public @Data class ContactPerson {
         this.zip= addressBookDTO.zip;
         this.phoneNumber= addressBookDTO.phoneNumber;
         this.emailId= addressBookDTO.emailId;
-        this.password=addressBookDTO.password;
+        this.password= addressBookDTO.password;
 
     }
 

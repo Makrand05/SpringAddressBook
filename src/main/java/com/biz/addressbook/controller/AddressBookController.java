@@ -7,6 +7,7 @@ import com.biz.addressbook.service.IAddressBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -86,7 +87,9 @@ public class AddressBookController {
 
     @PostMapping("/register")
     public ResponseEntity<ResponseDTO> registerUser(@RequestBody AddressBookDTO addressBookDTO) {
-        ContactPerson contactPerson = iAddressBookService.createContactPerson(addressBookDTO);
+
+
+      ContactPerson contactPerson = iAddressBookService.createContactPerson(addressBookDTO);
         ResponseDTO responseDTO = new ResponseDTO("Registered new user in address book", contactPerson);
         return new ResponseEntity(responseDTO, HttpStatus.OK);
     }
@@ -99,14 +102,15 @@ public class AddressBookController {
     @PostMapping(value = "/login")
     public ResponseEntity<ResponseDTO> loginAddressBook(@RequestBody AddressBookDTO addressBookDTO)
     {
-        ResponseDTO responseDTO=null;
-        ContactPerson contactPerson=iAddressBookService.getData(addressBookDTO.firstName,addressBookDTO.password);
-        if(contactPerson!=null) {
-            responseDTO = new ResponseDTO(contactPerson.getFirstName()+" User login Successfully");
+        ResponseDTO responseDTO;
+        boolean status=iAddressBookService.getData(addressBookDTO.emailId,addressBookDTO.password);
+
+
+        if(status) {
+           return new ResponseEntity(" User login Successfully",HttpStatus.OK);
         }
         else {
-            responseDTO =new ResponseDTO("Invalid Username and password");
+            return new ResponseEntity("Invalid Username and password",HttpStatus.OK);
         }
-        return new ResponseEntity<>(responseDTO,HttpStatus.OK);
     }
 }

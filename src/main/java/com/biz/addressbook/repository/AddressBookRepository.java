@@ -10,6 +10,10 @@ import org.springframework.stereotype.Repository;
 public interface AddressBookRepository extends JpaRepository<ContactPerson,Long>{
 
 
-    @Query(value = "select * from address_book where first_name = :name and password= :pass",nativeQuery = true)
-    ContactPerson findDataByNameAndPassword(String name, String pass);
+    @Query(value = "select * from address_book where email_Id = :emailId and password= :pass",nativeQuery = true)
+    ContactPerson findDataByNameAndPassword(String emailId, String pass);
+
+    @Query(value = "SELECT password from address_book WHERE email_Id = :email_Id",nativeQuery = true)
+    String findPassword( String email_Id);
+
 }
