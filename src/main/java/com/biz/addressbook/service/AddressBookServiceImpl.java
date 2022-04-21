@@ -44,8 +44,16 @@ public class AddressBookServiceImpl implements IAddressBookService {
 
     @Override
     public ContactPerson createContactPerson(AddressBookDTO addressBookDTO) {
-        addressBookDTO.setPassword(passwordEncoder.encode(addressBookDTO.getPassword()));
-        return addressBookRepository.save(new ContactPerson(addressBookDTO));
+
+        int count = addressBookRepository.findEmailId(addressBookDTO.getEmailId());
+        if(count==0){
+            addressBookDTO.setPassword(passwordEncoder.encode(addressBookDTO.getPassword()));
+            return addressBookRepository.save(new ContactPerson(addressBookDTO));
+        }else {
+            return null;
+        }
+
+
     }
 
     @Override

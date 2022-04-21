@@ -90,8 +90,12 @@ public class AddressBookController {
 
 
       ContactPerson contactPerson = iAddressBookService.createContactPerson(addressBookDTO);
-        ResponseDTO responseDTO = new ResponseDTO("Registered new user in address book", contactPerson);
-        return new ResponseEntity(responseDTO, HttpStatus.OK);
+      if(contactPerson!=null) {
+          ResponseDTO responseDTO = new ResponseDTO("Registered new user in address book", contactPerson);
+          return new ResponseEntity(responseDTO, HttpStatus.OK);
+      }else {
+          return new ResponseEntity("Email id already present", HttpStatus.OK);
+      }
     }
     /**
      * login API using username and password

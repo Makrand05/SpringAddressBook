@@ -15,5 +15,6 @@ public interface AddressBookRepository extends JpaRepository<ContactPerson,Long>
 
     @Query(value = "SELECT password from address_book WHERE email_Id = :email_Id",nativeQuery = true)
     String findPassword( String email_Id);
-
+    @Query(value = "SELECT count(email_id) from address_book WHERE email_Id = :email_Id",nativeQuery = true)
+    int findEmailId( String email_Id);
 }
