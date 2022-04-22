@@ -1,14 +1,17 @@
 package com.biz.addressbook.service;
 
 import com.biz.addressbook.dto.AddressBookDTO;
+import com.biz.addressbook.dto.LoginDTO;
 import com.biz.addressbook.entity.ContactPerson;
 import com.biz.addressbook.exception.AddressbookException;
 import com.biz.addressbook.repository.AddressBookRepository;
+import com.biz.addressbook.util.TokenGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Address book service class implementation and it implements IAddressBookService interface
@@ -19,6 +22,8 @@ public class AddressBookServiceImpl implements IAddressBookService {
     @Autowired
     private AddressBookRepository addressBookRepository;
 
+    @Autowired
+    TokenGenerator tokenGenerator = new TokenGenerator();
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 
@@ -46,14 +51,12 @@ public class AddressBookServiceImpl implements IAddressBookService {
     public ContactPerson createContactPerson(AddressBookDTO addressBookDTO) {
 
         int count = addressBookRepository.findEmailId(addressBookDTO.getEmailId());
-        if(count==0){
+        if (count == 0) {
             addressBookDTO.setPassword(passwordEncoder.encode(addressBookDTO.getPassword()));
             return addressBookRepository.save(new ContactPerson(addressBookDTO));
-        }else {
+        } else {
             return null;
         }
-
-
     }
 
     @Override
@@ -71,10 +74,22 @@ public class AddressBookServiceImpl implements IAddressBookService {
     }
 
     @Override
-    public boolean getData(String email, String pass) {
+    public String loginUser(LoginDTO loginDTO) {
 
-        String password= addressBookRepository.findPassword(email);
-       return passwordEncoder.matches(pass,password);
+        String password = addressBookRepository.findPassword(loginDTO.getEmailId());
+        boolean status = passwordEncoder.matches(loginDTO.getPassword(), password);
+
+        Optional<ContactPerson> user=addressBookRepository.findByEmailId(loginDTO.getEmailId());
+
+
+        String token = tokenGenerator.createToken(user.get().getId());
+
+        if (status) {
+            return " User login Successfully\n"+token;
+        } else {
+            return "Invalid Username and password";
+        }
+
     }
 
     @Override

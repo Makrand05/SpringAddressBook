@@ -1,6 +1,7 @@
 package com.biz.addressbook.controller;
 
 import com.biz.addressbook.dto.AddressBookDTO;
+import com.biz.addressbook.dto.LoginDTO;
 import com.biz.addressbook.dto.ResponseDTO;
 import com.biz.addressbook.entity.ContactPerson;
 import com.biz.addressbook.service.IAddressBookService;
@@ -104,17 +105,9 @@ public class AddressBookController {
      * @return
      */
     @PostMapping(value = "/login")
-    public ResponseEntity<ResponseDTO> loginAddressBook(@RequestBody AddressBookDTO addressBookDTO)
+    public ResponseEntity<ResponseDTO> loginAddressBook(@RequestBody LoginDTO loginDTO)
     {
-        ResponseDTO responseDTO;
-        boolean status=iAddressBookService.getData(addressBookDTO.emailId,addressBookDTO.password);
+        return new ResponseEntity(iAddressBookService.loginUser(loginDTO), HttpStatus.OK);
 
-
-        if(status) {
-           return new ResponseEntity(" User login Successfully",HttpStatus.OK);
-        }
-        else {
-            return new ResponseEntity("Invalid Username and password",HttpStatus.OK);
-        }
     }
 }
