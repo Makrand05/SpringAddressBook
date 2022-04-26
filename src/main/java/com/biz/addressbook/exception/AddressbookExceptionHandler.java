@@ -14,19 +14,19 @@ public class AddressbookExceptionHandler {
 
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ResponseDTO> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception){
+    public ResponseEntity<ResponseDTO> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
 
-        List<ObjectError> errorList=exception.getBindingResult().getAllErrors();
+        List<ObjectError> errorList = exception.getBindingResult().getAllErrors();
         List<String> errorMessage = errorList.stream()
                 .map(objectError -> objectError.getDefaultMessage())
                 .collect(Collectors.toList());
 
-        ResponseDTO responseDTO=new ResponseDTO("Error while processing Rest request",errorMessage);
+        ResponseDTO responseDTO = new ResponseDTO("Error while processing Rest request", errorMessage);
         return new ResponseEntity<>(responseDTO, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(AddressbookException.class)
-    public ResponseEntity<ResponseDTO> handleEmployeeException( AddressbookException exception) {
+    @ExceptionHandler(AddressableException.class)
+    public ResponseEntity<ResponseDTO> handleEmployeeException(AddressableException exception) {
 
 
         ResponseDTO responseDTO = new ResponseDTO("Exception while processing Rest request", exception.getMessage());

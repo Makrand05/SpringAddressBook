@@ -10,11 +10,12 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(name = "Address_Book")               //Table name in database
-public @Data class ContactPerson {
+public @Data
+class ContactPerson {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private  long id;
+    private long id;
     private String firstName;
     private String lastName;
     private String city;
@@ -30,14 +31,14 @@ public @Data class ContactPerson {
     }
 
     public void updateContactPerson(AddressBookDTO addressBookDTO) {
-        this.firstName=addressBookDTO.firstName;
-        this.lastName=addressBookDTO.lastName;
-        this.city= addressBookDTO.city;
-        this.state=addressBookDTO.state;
-        this.zip= addressBookDTO.zip;
-        this.phoneNumber= addressBookDTO.phoneNumber;
-        this.emailId= addressBookDTO.emailId;
-        this.password= addressBookDTO.password;
+        this.firstName = addressBookDTO.firstName;
+        this.lastName = addressBookDTO.lastName;
+        this.city = addressBookDTO.city;
+        this.state = addressBookDTO.state;
+        this.zip = addressBookDTO.zip;
+        this.phoneNumber = addressBookDTO.phoneNumber;
+        this.emailId = addressBookDTO.emailId;
+        this.password = addressBookDTO.password;
 
     }
 

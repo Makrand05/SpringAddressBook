@@ -2,7 +2,7 @@ package com.biz.addressbook.service;
 
 import com.biz.addressbook.dto.AddressBookDTO;
 import com.biz.addressbook.entity.ContactPerson;
-import com.biz.addressbook.exception.AddressbookException;
+import com.biz.addressbook.exception.AddressableException;
 import com.biz.addressbook.repository.AddressBookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -39,23 +39,34 @@ public class AddressBookServiceImpl implements IAddressBookService {
      */
     @Override
     public ContactPerson getContactByID(long id) {
-        return addressBookRepository.findById(id).orElseThrow(() -> new AddressbookException("Employee not found with id :" + id));
+        return addressBookRepository.findById(id).orElseThrow(() -> new AddressableException("Employee not found with id :" + id));
     }
 
+    /**
+     * Create new contact person
+     * @param addressBookDTO
+     * @return
+     */
     @Override
     public ContactPerson createContactPerson(AddressBookDTO addressBookDTO) {
 
         int count = addressBookRepository.findEmailId(addressBookDTO.getEmailId());
-        if(count==0){
+        if (count == 0) {
             addressBookDTO.setPassword(passwordEncoder.encode(addressBookDTO.getPassword()));
             return addressBookRepository.save(new ContactPerson(addressBookDTO));
-        }else {
+        } else {
             return null;
         }
 
 
     }
 
+    /**
+     * Update contect person by ID
+     * @param id
+     * @param addressBookDTO
+     * @return
+     */
     @Override
     public ContactPerson updateContactPerson(int id, AddressBookDTO addressBookDTO) {
         addressBookDTO.setPassword(passwordEncoder.encode(addressBookDTO.getPassword()));
@@ -64,17 +75,27 @@ public class AddressBookServiceImpl implements IAddressBookService {
         return addressBookRepository.save(contactPerson);
     }
 
+    /**
+     * Delect contact person by ID
+     * @param id
+     */
     @Override
     public void deleteContactByID(long id) {
         ContactPerson contactPerson = this.getContactByID(id);
         addressBookRepository.delete(contactPerson);
     }
 
+    /**
+     *
+     * @param email
+     * @param pass
+     * @return
+     */
     @Override
     public boolean getData(String email, String pass) {
 
-        String password= addressBookRepository.findPassword(email);
-       return passwordEncoder.matches(pass,password);
+        String password = addressBookRepository.findPassword(email);
+        return passwordEncoder.matches(pass, password);
     }
 
     @Override
