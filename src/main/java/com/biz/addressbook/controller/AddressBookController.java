@@ -108,6 +108,6 @@ public class AddressBookController {
     public ResponseEntity<ResponseDTO> loginAddressBook(@RequestBody LoginDTO loginDTO)
     {
         return new ResponseEntity(iAddressBookService.loginUser(loginDTO), HttpStatus.OK);
-
     }
 }
+
