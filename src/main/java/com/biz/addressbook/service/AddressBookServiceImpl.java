@@ -85,12 +85,7 @@ public class AddressBookServiceImpl implements IAddressBookService {
         addressBookRepository.delete(contactPerson);
     }
 
-    /**
-     *
-     * @param email
-     * @param pass
-     * @return
-     */
+
     @Override
     public boolean getData(String email, String pass) {
 
