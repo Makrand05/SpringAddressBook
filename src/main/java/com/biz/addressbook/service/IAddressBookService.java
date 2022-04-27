@@ -1,6 +1,7 @@
 package com.biz.addressbook.service;
 
 import com.biz.addressbook.dto.AddressBookDTO;
+import com.biz.addressbook.dto.LoginDTO;
 import com.biz.addressbook.entity.ContactPerson;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface IAddressBookService {
 
     void deleteContactByID(long id);
 
-    boolean getData(String name, String pass);
+    String loginUser(LoginDTO loginDTO);
 
     boolean encodePassword(String password);
 }

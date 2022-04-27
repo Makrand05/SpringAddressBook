@@ -1,12 +1,14 @@
 package com.biz.addressbook.controller;
 
 import com.biz.addressbook.dto.AddressBookDTO;
+import com.biz.addressbook.dto.LoginDTO;
 import com.biz.addressbook.dto.ResponseDTO;
 import com.biz.addressbook.entity.ContactPerson;
 import com.biz.addressbook.service.IAddressBookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +31,8 @@ public class AddressBookController {
         ResponseDTO responseDTO = new ResponseDTO("Get Mapping success", contactPersonList);
         return new ResponseEntity(responseDTO, HttpStatus.OK);
     }
+
+
     /**
      * get the contact by using id
      *
@@ -39,7 +43,8 @@ public class AddressBookController {
     public ResponseEntity<ResponseDTO> getContactByID(@PathVariable("contactId") long id) {
 
         ContactPerson contactPerson = iAddressBookService.getContactByID(id);
-        ResponseDTO responseDTO = new ResponseDTO("Get call by Id success" + id, contactPerson);
+//        System.out.println(contactPerson);
+        ResponseDTO responseDTO = new ResponseDTO("Get call by Id success"+id, contactPerson);
         return new ResponseEntity<ResponseDTO>(responseDTO, HttpStatus.OK);
     }
 
@@ -76,43 +81,33 @@ public class AddressBookController {
      * @return data with status
      */
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteAddressBookData(@PathVariable("id") long id) {
+    public ResponseEntity<String> deleteAddressbookData(@PathVariable("id") long id) {
         iAddressBookService.deleteContactByID(id);
-        return new ResponseEntity("Address Book with ID " + id + " is Deleted", HttpStatus.OK);
+        return new ResponseEntity<String>("Address Book with ID "+id+" is Deleted",HttpStatus.OK);
     }
 
-    /**
-     * Register a new user
-     *
-     * @param addressBookDTO
-     * @return
-     */
     @PostMapping("/register")
     public ResponseEntity<ResponseDTO> registerUser(@RequestBody AddressBookDTO addressBookDTO) {
 
-        ContactPerson contactPerson = iAddressBookService.createContactPerson(addressBookDTO);
-        if (contactPerson != null) {
-            ResponseDTO responseDTO = new ResponseDTO("Registered new user in address book", contactPerson);
-            return new ResponseEntity(responseDTO, HttpStatus.OK);
-        } else {
-            return new ResponseEntity("Email id already present", HttpStatus.OK);
-        }
-    }
 
+      ContactPerson contactPerson = iAddressBookService.createContactPerson(addressBookDTO);
+      if(contactPerson!=null) {
+          ResponseDTO responseDTO = new ResponseDTO("Registered new user in address book", contactPerson);
+          return new ResponseEntity(responseDTO, HttpStatus.OK);
+      }else {
+          return new ResponseEntity("Email id already present", HttpStatus.OK);
+      }
+    }
     /**
      * login API using username and password
-     *
      * @param
      * @param
+     * @return
      */
     @PostMapping(value = "/login")
-    public ResponseEntity<ResponseDTO> loginAddressBook(@RequestBody AddressBookDTO addressBookDTO) {
-        ResponseDTO responseDTO;
-        boolean status = iAddressBookService.getData(addressBookDTO.emailId, addressBookDTO.password);
-        if (status) {
-            return new ResponseEntity(" User login Successfully", HttpStatus.OK);
-        } else {
-            return new ResponseEntity("Invalid Username and password", HttpStatus.OK);
-        }
+    public ResponseEntity<ResponseDTO> loginAddressBook(@RequestBody LoginDTO loginDTO)
+    {
+        return new ResponseEntity(iAddressBookService.loginUser(loginDTO), HttpStatus.OK);
     }
 }
+
